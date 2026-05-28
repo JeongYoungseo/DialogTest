@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     Button btn;
+    boolean[] checkArr = {true,false,false};
     String[] itemArr = {"pizza", "chicken", "pasta"};
 
     @Override
@@ -37,12 +38,36 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
             dialog.setTitle("change button label");
             dialog.setIcon(R.drawable.icon2);
-            dialog.setItems(itemArr, new DialogInterface.OnClickListener() {
+            // 항목으로 구성된 대화상자(체크박스)
+            // 체크박스가 선택된 항목이 모두 버튼의 텍스트로 보이게
+            dialog.setMultiChoiceItems(itemArr, checkArr, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    btn.setText(itemArr[which]);
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    btn.setText("");
+                    if(isChecked)
+                        checkArr[which] = true;
+
+                    for(int i = 0; i<checkArr.length; i++){
+                        if(checkArr[i])
+                            btn.append(itemArr[i] + "::");
+                    }
+
                 }
             });
+//             항목으로 구성된 대화상자(라디오버튼)
+//            dialog.setSingleChoiceItems(itemArr,0, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    btn.setText(itemArr[which]);
+//                }
+//            });
+//             항목으로 구성된 대화상자(
+//            dialog.setItems(itemArr, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    btn.setText(itemArr[which]);
+//                }
+//            });
             dialog.setNegativeButton("close",null);
             dialog.show();
 
